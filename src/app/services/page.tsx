@@ -381,12 +381,18 @@ function ServiceCard({ service, language }: { service: any; language: any }) {
           </button>
         ) : (
           <>
-            <button className="flex-1 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors">
+            <Link
+              href={`/services/${service.id}/apply`}
+              className="flex-1 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors text-center inline-block"
+            >
               {language.code === "ar" ? "ابدأ الطلب" : "Start Application"}
-            </button>
-            <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+            </Link>
+            <Link
+              href={`/services/${service.id}/apply`}
+              className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center"
+            >
               <ChevronRightIcon className="w-4 h-4" />
-            </button>
+            </Link>
           </>
         )}
       </div>
