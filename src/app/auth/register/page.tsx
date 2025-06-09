@@ -257,7 +257,12 @@ export default function RegisterPage() {
         nationality: "Lebanese",
         address: {
           street: formData.address.street,
+          streetArabic: formData.address.street, // For now, same as English
+          building: "",
           city: formData.address.city,
+          cityArabic: formData.address.city, // For now, same as English
+          district: "",
+          districtArabic: "",
           region: formData.address.region,
           postalCode: formData.address.postalCode,
           country: "Lebanon",
