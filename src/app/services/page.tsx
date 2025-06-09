@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   MagnifyingGlassIcon,
@@ -16,6 +17,7 @@ import type { ServiceCategory, ServiceStatus } from "@/types";
 
 export default function ServicesPage() {
   const { language, toggleLanguage } = useLanguageToggle();
+  const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<
     ServiceCategory | "all"
@@ -23,6 +25,14 @@ export default function ServicesPage() {
   const [selectedStatus, setSelectedStatus] = useState<ServiceStatus | "all">(
     "all"
   );
+
+  // Handle URL parameters
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    if (categoryParam) {
+      setSelectedCategory(categoryParam as ServiceCategory);
+    }
+  }, [searchParams]);
 
   const categories = [
     {
@@ -44,6 +54,11 @@ export default function ServicesPage() {
     },
     {
       value: "vehicle-registration" as const,
+      label: "Transportation",
+      labelArabic: "النقل",
+    },
+    {
+      value: "transportation" as const,
       label: "Transportation",
       labelArabic: "النقل",
     },
