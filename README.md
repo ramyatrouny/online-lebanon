@@ -80,7 +80,7 @@ This project is designed for:
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/ramyatrouny/online-lebanon.git
    cd online-lebanon
    ```
 
