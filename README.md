@@ -1,6 +1,19 @@
 # Digital Lebanon 🇱🇧 | لبنان الرقمي
 
+> **⚠️ DISCLAIMER: This is a demo project for learning, testing, and simulation purposes only. This is NOT a real or official government portal. All content, services, and functionality are completely fictional and for educational/demonstration purposes.**
+
 A futuristic government services portal that reimagines Lebanon's public sector as a fully digital, user-centric experience. This project showcases how digital transformation could eliminate paperwork, long queues, and inefficiency in Lebanese government services.
+
+## 🎓 Purpose
+
+This project is designed for:
+
+- **Learning** modern web development techniques
+- **Testing** UI/UX concepts for government portals
+- **Demonstrating** digital transformation possibilities
+- **Educational** purposes and portfolio showcasing
+
+**This is NOT affiliated with any real Lebanese government entity or official institution.**
 
 ## 🌟 Features
 
@@ -234,9 +247,22 @@ The modular architecture allows easy addition of:
 
 This project demonstrates the potential for digital government transformation in Lebanon. Contributions that enhance the realistic simulation are welcome.
 
+## ⚠️ Important Notice
+
+**This is a fictional demonstration project created for learning and testing purposes only:**
+
+- ❌ **NOT a real government portal**
+- ❌ **NOT officially endorsed by any Lebanese institution**
+- ❌ **NO real government services provided**
+- ❌ **NO real data collection or processing**
+- ✅ **Educational and demonstration purposes only**
+- ✅ **Learning modern web development**
+- ✅ **Testing UI/UX concepts**
+- ✅ **Portfolio showcase project**
+
 ## 📄 License
 
-This project is for demonstration purposes, showcasing modern web development techniques applied to government service digitalization.
+This project is for demonstration, learning, and testing purposes only, showcasing modern web development techniques applied to government service digitalization simulation.
 
 ## 🙏 Acknowledgments
 
