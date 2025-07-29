@@ -15,14 +15,15 @@ import { mockMinistries, mockServices } from "@/data/mockData";
 import { getLocalizedText, formatCurrency } from "@/lib/utils";
 import StatusBadge from "@/components/ui/StatusBadge";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { Ministry, Service } from "@/types";
 
 export default function MinistryDetailPage() {
   const router = useRouter();
   const params = useParams();
   const { language, toggleLanguage } = useLanguageToggle();
 
-  const [ministry, setMinistry] = useState(null);
-  const [ministryServices, setMinistryServices] = useState([]);
+  const [ministry, setMinistry] = useState<Ministry | null>(null);
+  const [ministryServices, setMinistryServices] = useState<Service[]>([]);
 
   useEffect(() => {
     const foundMinistry = mockMinistries.find(

@@ -17,7 +17,7 @@ import { getLocalizedText, formatCurrency, generateId } from "@/lib/utils";
 import StatusBadge from "@/components/ui/StatusBadge";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import toast from "react-hot-toast";
-import type { Application, ApplicationStatus } from "@/types";
+import type { Application, ApplicationStatus, Service } from "@/types";
 
 interface FormData {
   personalInfo: {
@@ -46,16 +46,16 @@ export default function ServiceApplicationPage() {
   const { user, isAuthenticated, addApplication, addNotification } =
     useAppStore();
 
-  const [service, setService] = useState(null);
+  const [service, setService] = useState<Service | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     personalInfo: {
-      fullName: user?.name || "",
+      fullName: user ? `${user.firstName} ${user.lastName}` : "",
       nationalId: user?.nationalId || "",
       phone: user?.phone || "",
       email: user?.email || "",
-      address: user?.address || "",
+      address: user?.address ? `${user.address.street}, ${user.address.city}` : "",
     },
     documents: [],
     additionalInfo: "",
@@ -99,6 +99,8 @@ export default function ServiceApplicationPage() {
   };
 
   const handleSubmit = async () => {
+    if (!service) return;
+    
     setIsSubmitting(true);
 
     try {
@@ -112,24 +114,27 @@ export default function ServiceApplicationPage() {
       const newApplication: Application = {
         id: generateId(),
         serviceId: service.id,
-        serviceName: service.name,
-        serviceNameArabic: service.nameArabic,
+        userId: user!.id,
         trackingNumber,
         status: "submitted" as ApplicationStatus,
         submissionDate: new Date().toISOString(),
-        estimatedCompletion: new Date(
+        estimatedCompletionDate: new Date(
           Date.now() + 7 * 24 * 60 * 60 * 1000
         ).toISOString(),
-        ministry: service.ministry,
         fees: service.fees,
+        isPaid: false,
         currentStep: 1,
         totalSteps: 3,
         documents: formData.documents.map((file) => ({
+          id: generateId(),
           name: file.name,
-          type: file.type,
+          nameArabic: file.name,
+          type: "other" as const,
+          size: file.size,
           uploadDate: new Date().toISOString(),
+          isRequired: true,
+          isVerified: false,
         })),
-        applicantInfo: formData.personalInfo,
       };
 
       addApplication(newApplication);
@@ -137,6 +142,7 @@ export default function ServiceApplicationPage() {
       // Add notification
       addNotification({
         id: generateId(),
+        userId: user!.id,
         title:
           language.code === "ar"
             ? "تم تقديم الطلب بنجاح"
@@ -148,7 +154,7 @@ export default function ServiceApplicationPage() {
             : `Tracking number: ${trackingNumber}`,
         messageArabic: `رقم التتبع: ${trackingNumber}`,
         type: "success",
-        date: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
         isRead: false,
         actionUrl: `/dashboard/applications`,
       });
@@ -321,7 +327,11 @@ export default function ServiceApplicationPage() {
   );
 }
 
-function PersonalInfoStep({ formData, setFormData, language }) {
+function PersonalInfoStep({ formData, setFormData, language }: { 
+  formData: FormData; 
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>; 
+  language: any; 
+}) {
   const updatePersonalInfo = (field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -403,7 +413,12 @@ function PersonalInfoStep({ formData, setFormData, language }) {
   );
 }
 
-function DocumentsStep({ formData, setFormData, service, language }) {
+function DocumentsStep({ formData, setFormData, service, language }: { 
+  formData: FormData; 
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>; 
+  service: Service; 
+  language: any; 
+}) {
   const handleFileUpload = (files: FileList) => {
     const newFiles = Array.from(files);
     setFormData((prev) => ({
@@ -510,7 +525,12 @@ function DocumentsStep({ formData, setFormData, service, language }) {
   );
 }
 
-function PaymentStep({ formData, setFormData, service, language }) {
+function PaymentStep({ formData, setFormData, service, language }: { 
+  formData: FormData; 
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>; 
+  service: Service; 
+  language: any; 
+}) {
   const paymentMethods = [
     {
       id: "credit-card",
@@ -567,7 +587,7 @@ function PaymentStep({ formData, setFormData, service, language }) {
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  paymentMethod: e.target.value,
+                  paymentMethod: e.target.value as "credit-card" | "bank-transfer" | "cash",
                 }))
               }
               className="sr-only"
@@ -596,7 +616,11 @@ function PaymentStep({ formData, setFormData, service, language }) {
   );
 }
 
-function ReviewStep({ formData, service, language }) {
+function ReviewStep({ formData, service, language }: { 
+  formData: FormData; 
+  service: Service; 
+  language: any; 
+}) {
   return (
     <div className="p-6">
       <h2 className="text-lg font-semibold text-gray-900 mb-6">

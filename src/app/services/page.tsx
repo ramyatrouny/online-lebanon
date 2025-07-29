@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -15,7 +15,7 @@ import { getLocalizedText, searchItems, formatCurrency } from "@/lib/utils";
 import StatusBadge from "@/components/ui/StatusBadge";
 import type { ServiceCategory, ServiceStatus } from "@/types";
 
-export default function ServicesPage() {
+function ServicesPageContent() {
   const { language, toggleLanguage } = useLanguageToggle();
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
@@ -425,5 +425,13 @@ function ServiceCard({ service, language }: { service: any; language: any }) {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ServicesPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ServicesPageContent />
+    </Suspense>
   );
 }

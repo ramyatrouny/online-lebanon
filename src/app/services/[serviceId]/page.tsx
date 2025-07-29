@@ -17,6 +17,7 @@ import { mockServices, mockMinistries } from "@/data/mockData";
 import { getLocalizedText, formatCurrency } from "@/lib/utils";
 import StatusBadge from "@/components/ui/StatusBadge";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { Service, Ministry } from "@/types";
 
 export default function ServiceDetailPage() {
   const router = useRouter();
@@ -24,8 +25,8 @@ export default function ServiceDetailPage() {
   const { language, toggleLanguage } = useLanguageToggle();
   const isAuthenticated = useIsAuthenticated();
 
-  const [service, setService] = useState(null);
-  const [ministry, setMinistry] = useState(null);
+  const [service, setService] = useState<Service | null>(null);
+  const [ministry, setMinistry] = useState<Ministry | null>(null);
 
   useEffect(() => {
     const foundService = mockServices.find((s) => s.id === params.serviceId);
@@ -39,7 +40,7 @@ export default function ServiceDetailPage() {
     );
 
     setService(foundService);
-    setMinistry(foundMinistry);
+    setMinistry(foundMinistry || null);
   }, [params.serviceId, router]);
 
   if (!service || !ministry) {
